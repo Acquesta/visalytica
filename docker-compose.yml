@@ -1,0 +1,86 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: visalytica_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-visalytica}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-visalytica}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    networks:
+      - visalytica-net
+
+  backend:
+    build:
+      context: ./nest_visalityca
+      dockerfile: Dockerfile
+    container_name: visalytica_backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      PORT: 3001
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-visalytica}
+      DB_SSL: ${DB_SSL:-false}
+      JWT_SECRET: ${JWT_SECRET:-visalytica_jwt_secret_key_2026}
+      JWT_EXPIRATION: ${JWT_EXPIRATION:-7d}
+      AWS_REGION: ${AWS_REGION:-us-east-1}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-dummy_access_key}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:-dummy_secret_key}
+      AWS_S3_BUCKET_NAME: ${AWS_S3_BUCKET_NAME:-visalytica-bucket}
+    ports:
+      - "3001:3001"
+    networks:
+      - visalytica-net
+
+  visao_computacional:
+    build:
+      context: ./VisaoComputacional
+      dockerfile: Dockerfile
+    container_name: visalytica_visao_computacional
+    restart: unless-stopped
+    environment:
+      MODEL_PATH: ${VISION_MODEL_PATH:-my_model.pt}
+    ports:
+      - "5000:5000"
+    networks:
+      - visalytica-net
+
+  frontend:
+    build:
+      context: ./visalytica_frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3001}
+    container_name: visalytica_frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+      - visao_computacional
+    environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3001}
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    networks:
+      - visalytica-net
+
+volumes:
+  postgres_data:
+    name: visalytica_postgres_data
+
+networks:
+  visalytica-net:
+    name: visalytica-net
+    driver: bridge

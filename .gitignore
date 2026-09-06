@@ -1,0 +1,74 @@
+﻿# ==========================================
+# VISALYTICA MONOREPO - .gitignore
+# ==========================================
+
+# Variaveis de ambiente (NUNCA subir ao GitHub!)
+.env
+!.env.example
+
+# ==========================================
+# NODE / NEXT.JS (Backend & Frontend)
+# ==========================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Next.js build output
+.next/
+out/
+build/
+
+# NestJS build output
+dist/
+
+# Coverage
+coverage/
+
+# Cache
+.cache/
+.turbo/
+
+# ==========================================
+# PYTHON / VISAO COMPUTACIONAL
+# ==========================================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+.venv/
+venv/
+env/
+*.egg-info/
+
+# ==========================================
+# DOCKER
+# ==========================================
+# Nao ignorar Dockerfiles nem docker-compose.yml
+
+# ==========================================
+# MODELOS YOLO (arquivos grandes - usar LFS)
+# ==========================================
+VisaoComputacional/*.pt
+VisaoComputacional/**/*.pt
+
+# ==========================================
+# SISTEMA OPERACIONAL
+# ==========================================
+.DS_Store
+Thumbs.db
+desktop.ini
+*.lnk
+
+# ==========================================
+# IDEs
+# ==========================================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log

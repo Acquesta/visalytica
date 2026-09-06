@@ -1,0 +1,218 @@
+[
+  {
+    "id": 1,
+    "nome": "Kimberly Maria Vieira",
+    "cpf": "152.654.258-20",
+    "ultimaAtualizacao": "05/90/2215",
+    "dataCriacao": "05/90/2215",
+    "examesCount": 3,
+    "exames": [
+      {
+        "idExame": "01",
+        "dataRealizacao": "12/08/25",
+        "dataAtualizacao": "12/08/25",
+        "medico": "Cristina",
+        "peca": "Pulmão",
+        "diagnostico": "Carcinoma de pulmão"
+      },
+      {
+        "idExame": "02",
+        "dataRealizacao": "15/08/25",
+        "dataAtualizacao": "15/08/25",
+        "medico": "Rafael",
+        "peca": "Pele",
+        "diagnostico": "Nevus benigno"
+      },
+      {
+        "idExame": "03",
+        "dataRealizacao": "18/08/25",
+        "dataAtualizacao": "18/08/25",
+        "medico": "Cristina",
+        "peca": "Pulmão",
+        "diagnostico": "Sem alterações"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "nome": "Angelina Queiroz",
+    "cpf": "152.654.258-20",
+    "ultimaAtualizacao": "05/90/2215",
+    "dataCriacao": "05/90/2215",
+    "examesCount": 2,
+    "exames": [
+      {
+        "idExame": "01",
+        "dataRealizacao": "20/08/25",
+        "dataAtualizacao": "20/08/25",
+        "medico": "Cristina",
+        "peca": "Fígado",
+        "diagnostico": "Hepatite crônica"
+      },
+      {
+        "idExame": "02",
+        "dataRealizacao": "25/08/25",
+        "dataAtualizacao": "25/08/25",
+        "medico": "Rafael",
+        "peca": "Pele",
+        "diagnostico": "Lesão benigna"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "nome": "Milena Faria",
+    "cpf": "152.654.258-20",
+    "ultimaAtualizacao": "05/90/2215",
+    "dataCriacao": "05/90/2215",
+    "examesCount": 1,
+    "exames": [
+      {
+        "idExame": "01",
+        "dataRealizacao": "10/08/25",
+        "dataAtualizacao": "10/08/25",
+        "medico": "Cristina",
+        "peca": "Pulmão",
+        "diagnostico": "Inflamação crônica"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "nome": "Mario Antunes",
+    "cpf": "152.654.258-20",
+    "ultimaAtualizacao": "05/90/2215",
+    "dataCriacao": "05/90/2215",
+    "examesCount": 1,
+    "exames": [
+      {
+        "idExame": "01",
+        "dataRealizacao": "11/08/25",
+        "dataAtualizacao": "11/08/25",
+        "medico": "Rafael",
+        "peca": "Estômago",
+        "diagnostico": "Gastrite"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "nome": "Miguel Augusto",
+    "cpf": "152.654.258-20",
+    "ultimaAtualizacao": "05/90/2215",
+    "dataCriacao": "05/90/2215",
+    "examesCount": 1,
+    "exames": [
+      {
+        "idExame": "01",
+        "dataRealizacao": "14/08/25",
+        "dataAtualizacao": "14/08/25",
+        "medico": "Cristina",
+        "peca": "Pulmão",
+        "diagnostico": "Sem alterações"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "nome": "Sebastian Silva Santos",
+    "cpf": "152.654.258-20",
+    "ultimaAtualizacao": "05/90/2215",
+    "dataCriacao": "05/90/2215",
+    "examesCount": 2,
+    "exames": [
+      {
+        "idExame": "01",
+        "dataRealizacao": "13/08/25",
+        "dataAtualizacao": "13/08/25",
+        "medico": "Rafael",
+        "peca": "Pele",
+        "diagnostico": "Lesão suspeita"
+      },
+      {
+        "idExame": "02",
+        "dataRealizacao": "19/08/25",
+        "dataAtualizacao": "19/08/25",
+        "medico": "Cristina",
+        "peca": "Pulmão",
+        "diagnostico": "Carcinoma de pulmão"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "nome": "Antonia Aparecida",
+    "cpf": "152.654.258-20",
+    "ultimaAtualizacao": "05/90/2215",
+    "dataCriacao": "05/90/2215",
+    "examesCount": 3,
+    "exames": [
+      {
+        "idExame": "01",
+        "dataRealizacao": "16/08/25",
+        "dataAtualizacao": "16/08/25",
+        "medico": "Cristina",
+        "peca": "Pulmão",
+        "diagnostico": "Inflamação aguda"
+      },
+      {
+        "idExame": "02",
+        "dataRealizacao": "17/08/25",
+        "dataAtualizacao": "17/08/25",
+        "medico": "Rafael",
+        "peca": "Pele",
+        "diagnostico": "Nevus benigno"
+      },
+      {
+        "idExame": "03",
+        "dataRealizacao": "21/08/25",
+        "dataAtualizacao": "21/08/25",
+        "medico": "Cristina",
+        "peca": "Fígado",
+        "diagnostico": "Hepatite leve"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "nome": "José Silveira",
+    "cpf": "152.654.258-20",
+    "ultimaAtualizacao": "05/90/2215",
+    "dataCriacao": "05/90/2215",
+    "examesCount": 4,
+    "exames": [
+      {
+        "idExame": "01",
+        "dataRealizacao": "12/08/25",
+        "dataAtualizacao": "12/08/25",
+        "medico": "Cristina",
+        "peca": "Pulmão",
+        "diagnostico": "Carcinoma de pulmão"
+      },
+      {
+        "idExame": "02",
+        "dataRealizacao": "18/08/25",
+        "dataAtualizacao": "18/08/25",
+        "medico": "Rafael",
+        "peca": "Estômago",
+        "diagnostico": "Úlcera"
+      },
+      {
+        "idExame": "03",
+        "dataRealizacao": "19/08/25",
+        "dataAtualizacao": "19/08/25",
+        "medico": "Cristina",
+        "peca": "Fígado",
+        "diagnostico": "Esteatose hepática"
+      },
+      {
+        "idExame": "04",
+        "dataRealizacao": "20/08/25",
+        "dataAtualizacao": "20/08/25",
+        "medico": "Rafael",
+        "peca": "Pele",
+        "diagnostico": "Lesão benigna"
+      }
+    ]
+  }
+]
