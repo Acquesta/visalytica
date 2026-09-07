@@ -18,6 +18,8 @@ COPY . .
 # Next.js inlina essas variaveis no bundle do cliente.
 ARG NEXT_PUBLIC_API_URL=http://localhost:3001
 ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+ARG NEXT_PUBLIC_VISION_URL=http://localhost:5000
+ENV NEXT_PUBLIC_VISION_URL=${NEXT_PUBLIC_VISION_URL}
 
 RUN npm run build
 

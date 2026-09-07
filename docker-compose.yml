@@ -63,6 +63,7 @@ services:
       dockerfile: Dockerfile
       args:
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3001}
+        NEXT_PUBLIC_VISION_URL: ${NEXT_PUBLIC_VISION_URL:-http://localhost:5000}
     container_name: visalytica_frontend
     restart: unless-stopped
     depends_on:
@@ -70,6 +71,7 @@ services:
       - visao_computacional
     environment:
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3001}
+      NEXT_PUBLIC_VISION_URL: ${NEXT_PUBLIC_VISION_URL:-http://localhost:5000}
       PORT: 3000
     ports:
       - "3000:3000"

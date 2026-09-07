@@ -1,11 +1,18 @@
+# eventlet.monkey_patch() precisa rodar ANTES de qualquer outro import que
+# use socket/threading/time, senao o Flask-SocketIO (que escolhe o eventlet
+# automaticamente porque ele esta instalado) nao consegue alternar entre as
+# conexoes e a inferencia YOLO, e as conexoes ficam caindo em loop.
+import eventlet
+eventlet.monkey_patch()
+
 import os
 import cv2
 import numpy as np
 import base64
 import re
+import time
 from flask import Flask
 from flask_socketio import SocketIO
-import threading
 from ultralytics import YOLO
 from collections import deque
 
@@ -135,26 +142,36 @@ def handle_frame(data):
         img_bytes = base64.b64decode(img_data)
         np_arr = np.frombuffer(img_bytes, np.uint8)
         frame = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
+
+        # Frame vazio/invalido (camera ainda nao carregou no front, canvas 0x0,
+        # etc.): ignora em silencio em vez de estourar no cv2.resize.
+        if frame is None or frame.size == 0:
+            return
+
         frame = cv2.resize(frame, (640, 360))
 
-
-        if frame is not None:
-            # Armazena o frame mais recente (descarta o anterior)
-            frame_queue.append((frame, data.get("cameraId"), data.get("posicao")))
+        # Armazena o frame mais recente (descarta o anterior)
+        frame_queue.append((frame, data.get("cameraId"), data.get("posicao")))
 
     except Exception as e:
         print("Erro ao receber frame:", e)
 
 
 def worker():
-    """Thread que processa continuamente o frame mais recente."""
-    import time
+    """Green thread que processa continuamente o frame mais recente."""
     while True:
         if frame_queue:
             frame, camera_id, posicao = frame_queue.pop()
             t0 = time.time()
             processamento_imagem_yolo(frame, camera_id, posicao)
             print(f"Inferência YOLO: {(time.time() - t0):.2f}s")
+            # Cede o controle pro hub do eventlet entre inferencias, senao
+            # o loop segura o event loop e derruba as conexoes socket.
+            socketio.sleep(0)
+        else:
+            # Fila vazia: espera um pouco em vez de busy-loop (queimava CPU
+            # e starvava as conexoes).
+            socketio.sleep(0.01)
         
 # ===== NOVO EVENTO: RECEBER IMAGENS PARA TREINO =====
 @socketio.on("upload_image")
@@ -193,10 +210,7 @@ def handle_disconnect():
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":
-    # threading.Thread(target=processamento_imagem, daemon=True).start()
-    threading.Thread(target=worker, daemon=True).start()
-    # allow_unsafe_werkzeug=True: sem eventlet/gevent instalado, o Flask-SocketIO
-    # cai no servidor de desenvolvimento do Werkzeug, que por padrao recusa rodar
-    # fora de debug (RuntimeError) a menos que isso seja explicitado. Ok para
-    # este servico interno (POC), nao exposto diretamente a internet.
-    socketio.run(app, host="0.0.0.0", port=5000, allow_unsafe_werkzeug=True)
+    # start_background_task respeita o async_mode (eventlet), diferente de
+    # threading.Thread.
+    socketio.start_background_task(worker)
+    socketio.run(app, host="0.0.0.0", port=5000)

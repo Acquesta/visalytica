@@ -50,9 +50,15 @@ export default function Analise() {
   useEffect(() => {
     async function getDevices() {
       try {
-        await navigator.mediaDevices.getUserMedia({ video: true });
+        // Abre a camera só para obter permissão e os labels dos dispositivos,
+        // e LIBERA na sequência. Se o stream ficar aberto aqui, o ServerFrame
+        // não consegue reabrir a mesma câmera (NotReadableError).
+        const probe = await navigator.mediaDevices.getUserMedia({ video: true });
 
         const devicesList = await navigator.mediaDevices.enumerateDevices();
+
+        probe.getTracks().forEach((track) => track.stop());
+
         const videoDevicesList = devicesList.filter(
           (device) => device.kind === "videoinput"
         );
@@ -229,9 +235,23 @@ export default function Analise() {
   useEffect(() => {
     // Lista as câmeras disponíveis
     navigator.mediaDevices.enumerateDevices().then((deviceInfos) => {
-      const videoDevices = deviceInfos.filter(
-        (device) => device.kind === "videoinput"
-      );
+      const vistos = new Set();
+      const videoDevices = deviceInfos.filter((device) => {
+        if (device.kind !== "videoinput") return false;
+        // entradas fantasma do Chrome (sem id, "default", "communications")
+        if (
+          !device.deviceId ||
+          device.deviceId === "default" ||
+          device.deviceId === "communications"
+        )
+          return false;
+        // duplicatas da mesma câmera física (mesmo groupId) -> mantém só a 1ª,
+        // senão os dois painéis acabam pegando a mesma câmera
+        const chave = device.groupId || device.deviceId;
+        if (vistos.has(chave)) return false;
+        vistos.add(chave);
+        return true;
+      });
       setDevices(videoDevices);
 
       if (videoDevices.length < 2) {
