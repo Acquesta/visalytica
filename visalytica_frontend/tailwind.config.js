@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: ["class"],
+  darkMode: 'class',
   content: [
     "./src/**/*.{js,jsx}",
     "./app/**/*.{js,jsx}",
@@ -13,12 +13,18 @@ module.exports = {
         azul: '#166DED',
         azul_escuro: '#2A279C',
         noturno: '#242437',
-        noturno_medio: '#242437',
+        noturno_borda: '#182A3B',
+        noturno_medio_claro: '#2B3948',
+        noturno_medio: '#212E3B',
+        noturno_medio_escuro: '#1C2834',
         noturno_claro: '#474769',
         cinza_claro: '#FFFBFB',
         cinza_medio: '#F3F3F3',
         cinza_escuro: '#9b9b9b',
         cinza: '#CFCFCF',
+        cinza_texto: '#444444',
+        roxo: '#2A279C',
+        roxo_gradient: '#716FEA',
         vermelho: '#DD2020',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
@@ -77,5 +83,5 @@ module.exports = {
       '850': '850px'
     }
   },
-  plugins: []
+  plugins: [require("@tailwindcss/line-clamp")]
 };

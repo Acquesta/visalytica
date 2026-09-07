@@ -1,47 +1,51 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import Button from "@/components/Button";
+import Input from "@/components/Input";
+import TabelaSolicitacao from "@/components/TabelaSolicitacao";
+import { api } from "@/services/api";
 import Link from "next/link";
-import Input from "../../../components/Input";
-import Button from "../../../components/Button";
-import TabelaPacientes from "../../../components/TabelaPacientes";
-import BotoesPaginacao from "../../../components/BotoesPaginacao";
-import { api } from "../../../services/api";
+import { useEffect, useState } from "react";
 
-export default function ConsultarPacientes() {
-  const [mockPacientes, setMockPacientes] = useState([]);
+function Excluir_pacientes() {
+  const [solicitacao, setSolicitacao] = useState([]);
   const [meta, setMeta] = useState({});
   const [page, setPage] = useState(1);
   const [termoPesquisa, setTermoPesquisa] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const fetchPacientes = async () => {
-    setIsLoading(true);
+  const fetchSolicitacoes = async () => {
+     setIsLoading(true);
     try {
       const { data } = await api.get(
-        `/pacientes/tabela?page=${page}&limit=8&search=${termoPesquisa}`
+        `/admin/requests/patients?page=${page}&limit=10&search=${termoPesquisa}`
       );
-      setMockPacientes(data.items);
+      setSolicitacao(data.items);
       setMeta(data.meta);
+      console.log(data);
     } catch (e) {
       console.log(e);
+      setSolicitacao([]);
+      setMeta(null);
+      toast.error("Erro ao buscar solicitações.");
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchPacientes();
+    fetchSolicitacoes();
   }, [page, termoPesquisa]);
 
   const handlePesquisaChange = (e) => {
     setTermoPesquisa(e.target.value);
+    setPage(1);
   };
 
   return (
-    <div className="flex flex-col px-5 py-10 gap-6">
-      <div className="w-full flex max-md:flex-col justify-between gap-4 md:gap-8 bg-white dark:bg-noturno_medio px-9 py-5 rounded-[10px]">
-        <Link className="flex text-azul items-center gap-2" href={"/Home"}>
+    <div className="w-full h-full p-9 flex flex-col gap-7">
+      <div className="w-full flex max-md:flex-col justify-between gap-8 bg-white dark:bg-noturno_medio px-9 py-5 rounded-[10px]">
+        <Link className="flex text-azul items-center gap-2" href={"/Criar_usuario"}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"
@@ -56,17 +60,16 @@ export default function ConsultarPacientes() {
           </svg>
           <h3 className="">Voltar</h3>
         </Link>
-        <div className="flex w-full gap-2 md:gap-5">
+        <div className="flex w-full gap-5">
           <Input
             type="text"
-            placeHolder="Pesquise por CPF, nome ou médico"
-            value={termoPesquisa}
+            placeHolder="Pesquise por paciente, cpf ou nome do solicitante"
             onChange={handlePesquisaChange}
             className="!h-[50px]"
           />
           <Button
             classes={
-              "bg-gradient-to-b from-azul to-roxo_gradient w-[50px] h-[50px] min-w-[50px] rounded-[10px]"
+              "bg-gradient-to-b from-azul to-roxo_gradient w-[50px] h-[50px] min-w-[50px] rounded-2xl"
             }
           >
             <svg
@@ -84,31 +87,24 @@ export default function ConsultarPacientes() {
           </Button>
         </div>
       </div>
-      <div className="bg-white dark:bg-noturno_medio max-md:p-6 p-10 pb-5 rounded-[10px] h-full flex flex-col justify-between">
-        {isLoading ? (
-          <div className="flex-1 flex flex-col gap-2 justify-center items-center min-h-[80vh]">
-            <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-            <span className="bg-gradient-to-r from-azul to-roxo_gradient bg-clip-text text-transparent text-2xl">
-              Carregando...
-            </span>
-          </div>
-        ) : mockPacientes.length > 0 ? (
-          <>
-            <TabelaPacientes pacientes={mockPacientes} />
-            {meta && meta.totalPages > 1 && (
-              <div className="flex justify-end">
-                <BotoesPaginacao meta={meta} page={page} setPage={setPage} />
-              </div>
-            )}
-          </>
-        ) : (
-          <div className="flex-1 flex flex-col gap-2 justify-center items-center">
-            <h2 className="text-azul text-2xl text-center">
-              Paciente não encontrado
-            </h2>
-          </div>
-        )}
-      </div>
+      <TabelaSolicitacao
+        colunas={[
+          `Paciente`,
+          `CPF`,
+          `Data solicitação`,
+          `Solicitante`,
+          `Justificativas`,
+          `Ações`,
+        ]}
+        linhas={solicitacao}
+        onUpdate={fetchSolicitacoes}
+        meta={meta}
+        page={page}
+        setPage={setPage}
+        isLoading={isLoading}
+      />
     </div>
   );
 }
+
+export default Excluir_pacientes;

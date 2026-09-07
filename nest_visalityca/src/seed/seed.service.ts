@@ -6,6 +6,29 @@ import { Faker, pt_BR } from '@faker-js/faker';
 import { Paciente } from '../paciente/paciente.entity';
 import { Medico } from '../medico/medico.entity';
 import { Amostra } from '../amostra/amostra.entity';
+import { Role } from '../auth/enums/role.enum';
+
+// Senha usada em todas as contas criadas pelo seed (ambiente de POC/demo).
+const SENHA_PADRAO_SEED = 'Visalytica@2026';
+
+// Contas garantidas em todo start. O username '12345SP' e obrigatorio:
+// populateDatabase() atribui todas as amostras geradas a ele.
+const USUARIOS_BASE = [
+  {
+    username: '12345SP',
+    nome: 'Dra. Ana Souza',
+    cpf: '11111111111',
+    crm: '12345SP001',
+    role: Role.MEDICO,
+  },
+  {
+    username: 'admin',
+    nome: 'Administrador Visalytica',
+    cpf: '00000000000',
+    crm: 'ADMIN000001',
+    role: Role.ADMIN,
+  },
+];
 
 const faker = new Faker({ locale: [pt_BR] });
 
@@ -22,9 +45,39 @@ export class SeedService {
 
   async run() {
     console.log('Iniciando o processo de seeding...');
-    // await this.cleanDatabase();
+
+    // Idempotente: roda a cada start do container, mas so cria dados uma vez.
+    await this.ensureUsuariosBase();
+
+    const totalPacientes = await this.pacienteRepository.count();
+    if (totalPacientes > 0) {
+      console.log(
+        `Banco ja possui ${totalPacientes} paciente(s). Seed de dados ignorado.`,
+      );
+      return;
+    }
+
     await this.populateDatabase();
     console.log('Seeding concluído com sucesso!');
+  }
+
+  private async ensureUsuariosBase() {
+    for (const dados of USUARIOS_BASE) {
+      const existente = await this.medicoRepository.findOneBy({
+        username: dados.username,
+      });
+      if (existente) continue;
+
+      // O hook @BeforeInsert da entidade Medico faz o hash da senha.
+      const medico = this.medicoRepository.create({
+        ...dados,
+        senha: SENHA_PADRAO_SEED,
+      });
+      await this.medicoRepository.save(medico);
+      console.log(
+        `Usuario base criado: ${dados.username} / ${SENHA_PADRAO_SEED} (${dados.role})`,
+      );
+    }
   }
 
   // private async cleanDatabase() {

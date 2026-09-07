@@ -35,16 +35,22 @@ export function AuthProvider({ children }) {
     loadUserFromStorage();
   }, []);
 
-  const login = async (newToken) => {
+  const login = async (newToken, userData = null) => {
     localStorage.setItem('authToken', newToken);
     api.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
-    try {
-      const response = await api.get('/auth/perfil');
-      setUser(response.data);
+    
+    if (userData) {
+      setUser(userData);
       setToken(newToken);
-    } catch (error) {
-      console.error("Falha ao buscar perfil do usuário após login", error);
-      logout();
+    } else {
+      try {
+        const response = await api.get('/auth/perfil');
+        setUser(response.data);
+        setToken(newToken);
+      } catch (error) {
+        console.error("Falha ao buscar perfil do usuário após login", error);
+        logout();
+      }
     }
   };
 

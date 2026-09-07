@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import ServerFrame from "./ServerFrame";
 
 export default function ImagemTempoReal({
@@ -9,21 +12,36 @@ export default function ImagemTempoReal({
   status = false,
   qr,
 }) {
+  const [classeIdentificada, setClasseIdentificada] = useState(null);
+
+  useEffect(() => console.log(classeIdentificada), [classeIdentificada])
+
   return (
     <div
-      className={`bg-gray-900 flex flex-col items-center w-auto h-full relative rounded-xl xs:rounded-2xl px-3 xs:px-4 sm:px-5 pb-2 xs:pb-3 min-h-56 md:min-h-72`}
+      className={`flex flex-col items-center w-auto h-full relative rounded-xl`}
     >
       <div className="w-full flex justify-between items-center my-2 xs:my-3">
-        <p className="text-white text-xs xs:text-sm sm:text-base">{label}</p>
-        <p
-          style={{
-            backgroundColor: status ? "#439F57" : "#CFCFCF",
-            color: status && "#fff",
-          }}
-          className={`px-3 xs:px-4 sm:px-5 py-1 xs:py-1.5 rounded-md text-xs xs:text-sm`}
-        >
-          {status ? "Capturado" : "Não capturado"}
+        <p className="text-[#444444] text-xs xs:text-sm sm:text-base dark:text-cinza">
+          {label}
         </p>
+        <div className="flex">
+          {classeIdentificada && (
+            <p
+              className={`px-3 xs:px-4 sm:px-5 py-1 xs:py-1.5 rounded-[10px] text-xs mr-5 bg-azul text-white font-semibold`}
+            >
+              {classeIdentificada}
+            </p>
+          )}
+          <p
+            style={{
+              backgroundColor: status ? "#439F57" : "#CFCFCF",
+              color: status && "#fff",
+            }}
+            className={`px-3 xs:px-4 sm:px-5 py-1 xs:py-1.5 rounded-[10px] text-xs mr-5 whitespace-nowrap dark:text-black`}
+          >
+            {status ? "Capturado" : "Não capturado"}
+          </p>
+        </div>
       </div>
       {selectedDevice ? (
         <ServerFrame
@@ -31,10 +49,11 @@ export default function ImagemTempoReal({
           refVideo={refVideo}
           frameCaptura={frameCaptura}
           medidas={medidas}
+          setClasse={setClasseIdentificada}
           qr={qr}
         />
       ) : (
-        <div className="my-auto">
+        <div className="bg-gray-900 h-full w-full max-lg:min-h-40 flex justify-center items-center rounded-[10px]">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="150"

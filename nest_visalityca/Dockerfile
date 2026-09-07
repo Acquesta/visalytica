@@ -37,4 +37,7 @@ COPY package.json ./package.json
 
 EXPOSE 3001
 
-CMD ["node", "dist/main"]
+# Roda o seed (idempotente) antes de subir a API. Se o seed falhar, a API
+# sobe mesmo assim ("|| true"). O "exec" garante que o node vire PID 1 e
+# receba os sinais (SIGTERM) do Docker corretamente.
+CMD ["sh", "-c", "node dist/seed.js || true; exec node dist/main"]

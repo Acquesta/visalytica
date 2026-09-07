@@ -1,14 +1,23 @@
 import "../globals.css";
-import Hotbar from '../../components/Hotbar'
+import Hotbar from '../../components/Sidebar'
 import PrivateRoute from "../../components/PrivateRoute";
 
 export default function RootLayout({ children }) {
   return (
     <PrivateRoute> 
-      <div className="flex flex-col min-h-screen">
+      <div className="flex min-h-screen">
         <Hotbar />
-        <main className="flex-1 pt-[70px] xs:pt-[75px] sm:pt-[85px] md:pt-[95px] lg:pt-[101px] overflow-y-auto">
-          <div className="px-3 xs:px-4 sm:px-6 md:px-8 lg:px-12 max-md:py-4 pt-4">
+        <main className="max-md:mt-[76px] relative isolate flex-1 overflow-y-auto md:ml-[270px]">
+          <div 
+            className="
+              absolute inset-0 z-[-1]
+              bg-[radial-gradient(circle,_#0077FF39,_#F3F5F729)]
+              dark:bg-[radial-gradient(circle,_#0077FF_10%,_#1D232C_82%)] dark:opacity-65
+            "
+            aria-hidden="true"
+          />
+
+          <div className="h-full">
             {children}
           </div>
         </main>

@@ -42,41 +42,41 @@ export default function TabelaPacientes({ pacientes }) {
 
   return (
     <>
-      <div className="bg-white shadow-md md:rounded-xl md:border md:border-cinza overflow-hidden">
-        <div className="overflow-x-auto hidden md:block">
-          <table className="min-w-full text-sm text-center">
-            <thead className="text-sm font-semibold border-b">
+      <div className="max-md:hidden dark:shadow-none overflow-hidden rounded-[10px] text-[#615D5D] dark:text-cinza h-[92%]">
+        <div className="flex flex-col justify-between  overflow-x-auto">
+          <table className="min-w-full text-sm text-center h-full">
+            <thead className="text-sm font-semibold ">
               <tr>
                 {headers.map((header) => (
                   <th
                     key={header}
                     scope="col"
-                    className="bg-cinza_medio px-6 py-4 text-sm border-r"
+                    className="bg-cinza_medio dark:bg-noturno_medio_claro px-6 py-4 text-sm"
                   >
                     {header}
                   </th>
                 ))}
               </tr>
             </thead>
-            <tbody>
+            <tbody className="">
               {pacientes.map((paciente) => (
                 <tr
                   key={paciente.cpf}
-                  className="border-cinza bg-white border-b hover:bg-cinza_escuro/30"
+                  className=" bg-white dark:bg-noturno_medio dark:hover:bg-noturno_medio_claro hover:bg-cinza_escuro/30 h-full"
                 >
-                  <td className="px-6 py-4 border-r font-medium">
+                  <td className="px-4 my-auto font-medium">
                     {paciente.nome_paciente}
                   </td>
-                  <td className="px-6 py-4 border-r">
+                  <td className="px-4 py-4">
                     {formatarCPF(paciente.cpf)}
                   </td>
-                  <td className="px-6 py-4 border-r">
+                  <td className="px-4 py-4">
                     {transformaDatas(paciente.ultima_atualizacao_exame)}
                   </td>
-                  <td className="px-6 py-4 border-r">
+                  <td className="px-4 py-4">
                     {transformaDatas(paciente.data_criacao_paciente)}
                   </td>
-                  <td className="px-6 py-4 border-r">
+                  <td className="px-4 py-4">
                     <Link
                       href={`/pacientes/${paciente.cpf}`}
                       className="font-medium text-blue-600 hover:underline"
@@ -104,11 +104,11 @@ export default function TabelaPacientes({ pacientes }) {
           </table>
         </div>
       </div>
-      <div className="md:hidden gap-3 flex flex-col w-full">
+      <div className="md:hidden gap-3 flex flex-col w-full h-full">
         {pacientes.map((paciente) => (
           <div
             key={paciente.cpf}
-            className="border w-full p-4 rounded-[10px] space-y-3"
+            className="border w-full p-4 bg-white dark:bg-noturno_medio_claro rounded-[10px] space-y-3"
           >
             <div className="flex justify-between items-start gap-1">
               <div className="font-bold text-lg text-azul">
@@ -120,11 +120,11 @@ export default function TabelaPacientes({ pacientes }) {
             </div>
             <div className="space-y-1 text-sm">
               <div>
-                <span className="font-semibold text-gray-600">CPF: </span>
+                <span className="font-semibold text-gray-600 dark:text-cinza_escuro">CPF: </span>
                 <span>{formatarCPF(paciente.cpf)}</span>
               </div>
               <div>
-                <span className="font-semibold text-gray-600">
+                <span className="font-semibold text-gray-600 dark:text-cinza_escuro">
                   Última atualização:{" "}
                 </span>
                 <span>
@@ -132,13 +132,13 @@ export default function TabelaPacientes({ pacientes }) {
                 </span>
               </div>
               <div>
-                <span className="font-semibold text-gray-600">
+                <span className="font-semibold text-gray-600 dark:text-cinza_escuro">
                   Data de criação:{" "}
                 </span>
                 <span>{transformaDatas(paciente.data_criacao_paciente)}</span>
               </div>
               <div>
-                <span className="font-semibold text-gray-600">Exames: </span>
+                <span className="font-semibold text-gray-600 dark:text-cinza_escuro">Exames: </span>
                 <Link
                   href={`/pacientes/${paciente.cpf}`}
                   className="font-medium text-blue-600 underline"

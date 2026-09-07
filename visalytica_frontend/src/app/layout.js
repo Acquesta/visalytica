@@ -1,7 +1,10 @@
+// app/layout.js
+
 import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
 import Providers from "../components/Providers";
+import { ThemeProvider } from '../components/ThemeProvider'; // Verifique se o caminho está correto
 
 const inter = Inter({
   weight: ["400", "600", "900"],
@@ -16,33 +19,40 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="pt-br" className={inter.className}>
+    <html lang="pt-br" className={inter.className} suppressHydrationWarning>
       <body>
-        <Providers>
-          {children}
-          <Toaster
-            position="top-right"
-            toastOptions={{
-              duration: 3000,
-              style: {
-                background: "#16a34a",
-                color: "#fff",
-                fontFamily: "Inter, sans-serif",
-                fontWeight: "500",
-              },
-              success: {
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Providers>
+            {children}
+            <Toaster
+              position="top-right"
+              toastOptions={{
+                duration: 3000,
                 style: {
                   background: "#16a34a",
+                  color: "#fff",
+                  fontFamily: "Inter, sans-serif",
+                  fontWeight: "500",
                 },
-              },
-              error: {
-                style: {
-                  background: "#DD2020",
+                success: {
+                  style: {
+                    background: "#16a34a",
+                  },
                 },
-              },
-            }}
-          />
-        </Providers>
+                error: {
+                  style: {
+                    background: "#DD2020",
+                  },
+                },
+              }}
+            />
+          </Providers>
+        </ThemeProvider>
       </body>
     </html>
   );

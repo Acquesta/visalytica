@@ -2,10 +2,14 @@ import "../globals.css";
 import logoVisalytica from "../../assets/logoVisalyticaGrad.svg";
 import logoDasa from "../../assets/logoDasa.svg";
 import Image from "next/image";
+import { ThemeSwitcher } from "../../components/ThemeSwitcher";
 
 export default function RootLayout({ children }) {
   return (
     <main className="flex h-screen">
+      <div className="absolute top-4 right-4 z-50">
+        <ThemeSwitcher />
+      </div>
       <div className="h-screen w-full relative overflow-hidden hidden lg:flex">
         <video
           autoPlay
@@ -31,7 +35,7 @@ export default function RootLayout({ children }) {
         </div>
         <div className="my-auto">
           <a href="https://www.dasa.com.br" target="_blank" rel="noreferrer">
-          <Image src={logoDasa} alt="logo dasa" />
+            <Image src={logoDasa} alt="logo dasa" />
           </a>
         </div>
       </div>

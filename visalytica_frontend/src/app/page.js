@@ -10,7 +10,7 @@ export default function Home() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-      router.push("/login"); // redireciona para /Home
+      router.push("/login");
     }, 2500);
 
     return () => clearTimeout(timer);
