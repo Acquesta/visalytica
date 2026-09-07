@@ -44,17 +44,6 @@ env/
 *.egg-info/
 
 # ==========================================
-# DOCKER
-# ==========================================
-# Nao ignorar Dockerfiles nem docker-compose.yml
-
-# ==========================================
-# MODELOS YOLO (arquivos grandes - usar LFS)
-# ==========================================
-VisaoComputacional/*.pt
-VisaoComputacional/**/*.pt
-
-# ==========================================
 # SISTEMA OPERACIONAL
 # ==========================================
 .DS_Store
